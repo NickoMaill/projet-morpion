@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/projet-morpion/static/css/main.cf2216ff.css",
+    "main.js": "/projet-morpion/static/js/main.5bdf9ad4.js",
+    "static/js/787.e357f9fb.chunk.js": "/projet-morpion/static/js/787.e357f9fb.chunk.js",
+    "index.html": "/projet-morpion/index.html",
+    "main.cf2216ff.css.map": "/projet-morpion/static/css/main.cf2216ff.css.map",
+    "main.5bdf9ad4.js.map": "/projet-morpion/static/js/main.5bdf9ad4.js.map",
+    "787.e357f9fb.chunk.js.map": "/projet-morpion/static/js/787.e357f9fb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cf2216ff.css",
+    "static/js/main.5bdf9ad4.js"
+  ]
+}
