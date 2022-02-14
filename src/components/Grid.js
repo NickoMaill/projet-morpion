@@ -3,11 +3,21 @@ import React from "react";
 import Button from "./Button";
 import { Icon } from "@iconify/react"; // Cats icons (Copyright Concats)
 
-let computerArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
+let computerArray = [];
 
 class Grid extends React.Component {
   constructor() {
     super();
+    this.button0 = React.createRef();
+    this.button1 = React.createRef();
+    this.button2 = React.createRef();
+    this.button3 = React.createRef();
+    this.button4 = React.createRef();
+    this.button5 = React.createRef();
+    this.button6 = React.createRef();
+    this.button7 = React.createRef();
+    this.button8 = React.createRef();
+
     this.state = {
       player1: "X", // Player 1
       player2: "O", // Player 2
@@ -40,14 +50,28 @@ class Grid extends React.Component {
       ],
     };
 
-    console.log(this.state.computerArray);
-
     // Bind functions
     this.handleClick = this.handleClick.bind(this);
     this.checkIfWinP1 = this.checkIfWinP1.bind(this);
     this.checkIfWinP2 = this.checkIfWinP2.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.computerClick = this.computerClick.bind(this);
+  }
+
+  componentDidMount() {
+    computerArray.push(
+      this.button0.current,
+      this.button1.current,
+      this.button2.current,
+      this.button3.current,
+      this.button4.current,
+      this.button5.current,
+      this.button6.current,
+      this.button7.current,
+      this.button8.current
+    );
+
+    console.log("COMPUTER ARRAY", computerArray);
   }
 
   // !------------------------------- FUNCTIONS -------------------------------- //
@@ -119,25 +143,27 @@ class Grid extends React.Component {
     });
   }
 
-  computerClick(e) {
-    if (this.state.player1Turn === false) {
-      let random = Math.floor(Math.random() * computerArray.length);
-      const copyArrayComputer = [...this.state.checkedComputer, random];
+  computerClick() {
+    console.log("FONCTION LANCEE");
 
-      this.setState(
-        {
-          player1Turn: true,
-        },
-        () => {
-          this.setState({ checkedComputer: copyArrayComputer }, () => {
-            console.log("test Array player2: ", this.state.checkedComputer);
-            e.target.value = this.state.player2;
-            e.target.className = "styleO m-1 border"; //style for O
-            this.checkIfWinP2();
-          });
-        }
-      );
-    }
+    let random = Math.floor(Math.random() * computerArray.length);
+    console.log("RANDOM", random);
+    const copyArrayComputer = [...this.state.checkedComputer, random];
+    console.log("random computer", copyArrayComputer);
+
+    this.setState({
+      player1Turn: true,
+      checkedComputer: copyArrayComputer,
+    });
+
+    // this.button1.current.value = this.state.player2;
+    computerArray[random].value = this.state.player2;
+    computerArray[random].className = "styleO m-1 border"; //style for O
+    computerArray.splice(computerArray[random], 1);
+    console.log("REF", computerArray[random].value);
+    console.log("CLASSNAME", computerArray[random].className);
+
+    this.checkIfWinP2();
   }
 
   handleClick(e) {
@@ -192,7 +218,6 @@ class Grid extends React.Component {
               console.log("test Array player1: ", this.state.checkedBtnPlayer1);
               console.log("Test array computer", computerArray);
               e.target.value = this.state.player1;
-              console.log("test click", e.target);
               e.target.className = "styleX m-1 border"; //style for X
               this.checkIfWinP1();
             }
@@ -288,16 +313,22 @@ class Grid extends React.Component {
               <Button
                 onclick={this.handleClick}
                 id="0"
+                buttonRef={this.button0}
+                value=""
                 disabled={this.state.disabled}
               />
               <Button
                 onclick={this.handleClick}
                 id="1"
+                buttonRef={this.button1}
+                value=""
                 disabled={this.state.disabled}
               />
               <Button
                 onclick={this.handleClick}
                 id="2"
+                buttonRef={this.button2}
+                value=""
                 disabled={this.state.disabled}
               />
             </div>
@@ -306,16 +337,22 @@ class Grid extends React.Component {
               <Button
                 onclick={this.handleClick}
                 id="3"
+                buttonRef={this.button3}
+                value=""
                 disabled={this.state.disabled}
               />
               <Button
                 onclick={this.handleClick}
                 id="4"
+                buttonRef={this.button4}
+                value=""
                 disabled={this.state.disabled}
               />
               <Button
                 onclick={this.handleClick}
                 id="5"
+                buttonRef={this.button5}
+                value=""
                 disabled={this.state.disabled}
               />
             </div>
@@ -324,16 +361,22 @@ class Grid extends React.Component {
               <Button
                 onclick={this.handleClick}
                 id="6"
+                buttonRef={this.button6}
+                value=""
                 disabled={this.state.disabled}
               />
               <Button
                 onclick={this.handleClick}
                 id="7"
+                buttonRef={this.button7}
+                value=""
                 disabled={this.state.disabled}
               />
               <Button
                 onclick={this.handleClick}
                 id="8"
+                buttonRef={this.button8}
+                value=""
                 disabled={this.state.disabled}
               />
             </div>

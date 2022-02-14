@@ -16,6 +16,7 @@ class Button extends React.Component {
           onClick={this.props.onclick}
           disabled={this.props.disabled}
           id={this.props.id}
+          ref={this.props.buttonRef}
         ></input>
       </div>
     );
