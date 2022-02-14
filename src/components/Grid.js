@@ -205,13 +205,17 @@ class Grid extends React.Component {
         }
       );
 
+      // REcherche d'un objet avec find()
       function checkId(currentRef) {
         return currentRef.id === e.target.id;
       }
 
       let reference = computerArray.find(checkId);
       console.log("REFERENCE", reference);
+
+      // Recherche de l'objet dans l'array avec indexOf()
       let index = computerArray.indexOf(reference);
+
       computerArray.splice(index, 1);
       console.log("TARGET", e.target.id);
       console.log("INDEX", index);
@@ -238,7 +242,7 @@ class Grid extends React.Component {
     }
 
     if (prevState.checkedBtnPlayer1 !== this.state.checkedBtnPlayer1) {
-      let random = 0;
+      let random = Math.floor(Math.random() * computerArray.length);
 
       console.log("RANDOM", random);
       const copyArrayComputer = [...this.state.checkedComputer, random];
