@@ -3,6 +3,8 @@ import React from "react";
 import Button from "./Button";
 import { Icon } from "@iconify/react"; // Cats icons (Copyright Concats)
 
+let computerArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"];
+
 class Grid extends React.Component {
   constructor() {
     super();
@@ -21,6 +23,7 @@ class Grid extends React.Component {
       clickedBtns: [],
       checkedBtnPlayer1: [], // Player 1's history of checked buttons
       checkedBtnPlayer2: [], // Player 2's history of checked buttons
+      checkedComputer: [],
       disabled: false,
       winner: false, // Boolean to check if a player has won
 
@@ -37,11 +40,14 @@ class Grid extends React.Component {
       ],
     };
 
+    console.log(this.state.computerArray);
+
     // Bind functions
     this.handleClick = this.handleClick.bind(this);
     this.checkIfWinP1 = this.checkIfWinP1.bind(this);
     this.checkIfWinP2 = this.checkIfWinP2.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.computerClick = this.computerClick.bind(this);
   }
 
   // !------------------------------- FUNCTIONS -------------------------------- //
@@ -113,6 +119,27 @@ class Grid extends React.Component {
     });
   }
 
+  computerClick(e) {
+    if (this.state.player1Turn === false) {
+      let random = Math.floor(Math.random() * computerArray.length);
+      const copyArrayComputer = [...this.state.checkedComputer, random];
+
+      this.setState(
+        {
+          player1Turn: true,
+        },
+        () => {
+          this.setState({ checkedComputer: copyArrayComputer }, () => {
+            console.log("test Array player2: ", this.state.checkedComputer);
+            e.target.value = this.state.player2;
+            e.target.className = "styleO m-1 border"; //style for O
+            this.checkIfWinP2();
+          });
+        }
+      );
+    }
+  }
+
   handleClick(e) {
     // If the button's value is not empty, it means that the button is already clicked => the user can't select it and gets an error message :
     if (e.target.value !== "") {
@@ -132,37 +159,47 @@ class Grid extends React.Component {
 
     // Creating a condition to check whose turn it is (Player1's turn or Player2's turn): if the boolean Player1Turn is true, it means that the next move will be a "X" for Player 1. If Player1Turn is false, the next move will be a "O" for Player 2:
 
-    if (this.state.player1Turn === false) {
-      const copyArray2 = [...this.state.checkedBtnPlayer2, e.target.id];
-      this.setState(
-        {
-          player1Turn: true,
-        },
-        () => {
-          this.setState({ checkedBtnPlayer2: copyArray2 }, () => {
-            console.log("test Array player2: ", this.state.checkedBtnPlayer2);
-            e.target.value = this.state.player2;
-            e.target.className = "styleO m-1 border"; //style for O
-            this.checkIfWinP2();
-          });
-        }
-      );
-      // ---------------- PLAYER 1 ---------------- //
-    } else if (this.state.player1Turn === true) {
+    // if (this.state.player1Turn === false) {
+    //   const copyArray2 = [...this.state.checkedBtnPlayer2, e.target.id];
+    //   this.setState(
+    //     {
+    //       player1Turn: true,
+    //     },
+    //     () => {
+    //       this.setState({ checkedBtnPlayer2: copyArray2 }, () => {
+    //         console.log("test Array player2: ", this.state.checkedBtnPlayer2);
+    //         e.target.value = this.state.player2;
+    //         e.target.className = "styleO m-1 border"; //style for O
+    //         this.checkIfWinP2();
+    //       });
+    //     }
+    //   );
+
+    // ---------------- PLAYER 1 ---------------- //
+    if (this.state.player1Turn === true) {
       const copyArray1 = [...this.state.checkedBtnPlayer1, e.target.id];
       this.setState(
         {
           player1Turn: false,
         },
         () => {
-          this.setState({ checkedBtnPlayer1: copyArray1 }, () => {
-            console.log("test Array player1: ", this.state.checkedBtnPlayer1);
-            e.target.value = this.state.player1;
-            e.target.className = "styleX m-1 border"; //style for X
-            this.checkIfWinP1();
-          });
+          computerArray.splice(e.target.id, 1);
+          this.setState(
+            {
+              checkedBtnPlayer1: copyArray1,
+            },
+            () => {
+              console.log("test Array player1: ", this.state.checkedBtnPlayer1);
+              console.log("Test array computer", computerArray);
+              e.target.value = this.state.player1;
+              console.log("test click", e.target);
+              e.target.className = "styleX m-1 border"; //style for X
+              this.checkIfWinP1();
+            }
+          );
         }
       );
+      this.computerClick();
     }
     const copyClickedBtns = this.state.clickedBtns; // Creating a copy of the clicked buttons's array
     copyClickedBtns.push(e.target.id); // Adding the last clicked button to our copy array
