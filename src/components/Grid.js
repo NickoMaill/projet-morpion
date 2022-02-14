@@ -55,7 +55,7 @@ class Grid extends React.Component {
     this.checkIfWinP1 = this.checkIfWinP1.bind(this);
     this.checkIfWinP2 = this.checkIfWinP2.bind(this);
     this.handleReset = this.handleReset.bind(this);
-    this.computerClick = this.computerClick.bind(this);
+    // this.computerClick = this.computerClick.bind(this);
   }
 
   componentDidMount() {
@@ -143,28 +143,9 @@ class Grid extends React.Component {
     });
   }
 
-  computerClick() {
-    console.log("FONCTION LANCEE");
+  // computerClick() {
 
-    let random = Math.floor(Math.random() * computerArray.length);
-    console.log("RANDOM", random);
-    const copyArrayComputer = [...this.state.checkedComputer, random];
-    console.log("random computer", copyArrayComputer);
-
-    this.setState({
-      player1Turn: true,
-      checkedComputer: copyArrayComputer,
-    });
-
-    // this.button1.current.value = this.state.player2;
-    computerArray[random].value = this.state.player2;
-    computerArray[random].className = "styleO m-1 border"; //style for O
-    computerArray.splice(computerArray[random], 1);
-    console.log("REF", computerArray[random].value);
-    console.log("CLASSNAME", computerArray[random].className);
-
-    this.checkIfWinP2();
-  }
+  // }
 
   handleClick(e) {
     // If the button's value is not empty, it means that the button is already clicked => the user can't select it and gets an error message :
@@ -209,7 +190,6 @@ class Grid extends React.Component {
           player1Turn: false,
         },
         () => {
-          computerArray.splice(e.target.id, 1);
           this.setState(
             {
               checkedBtnPlayer1: copyArray1,
@@ -224,7 +204,18 @@ class Grid extends React.Component {
           );
         }
       );
-      this.computerClick();
+
+      function checkId(currentRef) {
+        return currentRef.id === e.target.id;
+      }
+
+      let reference = computerArray.find(checkId);
+      console.log("REFERENCE", reference);
+      let index = computerArray.indexOf(reference);
+      computerArray.splice(index, 1);
+      console.log("TARGET", e.target.id);
+      console.log("INDEX", index);
+      // this.computerClick();
     }
     const copyClickedBtns = this.state.clickedBtns; // Creating a copy of the clicked buttons's array
     copyClickedBtns.push(e.target.id); // Adding the last clicked button to our copy array
@@ -245,6 +236,27 @@ class Grid extends React.Component {
         this.setState({ disabled: true });
       }
     }
+
+    if (prevState.checkedBtnPlayer1 !== this.state.checkedBtnPlayer1) {
+      let random = 0;
+
+      console.log("RANDOM", random);
+      const copyArrayComputer = [...this.state.checkedComputer, random];
+      console.log("random computer", copyArrayComputer);
+
+      this.setState({
+        player1Turn: true,
+        checkedComputer: copyArrayComputer,
+      });
+
+      computerArray[random].value = this.state.player2;
+      computerArray[random].className = "styleO m-1 border"; //style for O
+
+      console.log("NEW ARRAY", computerArray);
+
+      computerArray.splice(random, 1);
+      this.checkIfWinP2();
+    }
   }
 
   // Function that resets our buttons and elements at the end of a round  :
@@ -262,6 +274,7 @@ class Grid extends React.Component {
     this.setState({
       checkedBtnPlayer1: [],
       checkedBtnPlayer2: [],
+      checkedComputer: [],
       clickedBtns: [],
       player1Turn: true,
       winner: false,
